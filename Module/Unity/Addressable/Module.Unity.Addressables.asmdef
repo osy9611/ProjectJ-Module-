@@ -1,0 +1,19 @@
+{
+    "name": "Module.Unity.Addressables",
+    "rootNamespace": "",
+    "references": [
+        "GUID:cccf30a039e084843a844684f30961dc",
+        "GUID:844249fa36e02a74dad55a6bccaa4fe2",
+        "GUID:9e24947de15b9834991c9d8411ea37cf",
+        "GUID:84651a3751eca9349aac36a66bba901b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

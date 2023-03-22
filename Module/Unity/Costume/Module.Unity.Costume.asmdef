@@ -1,0 +1,17 @@
+{
+    "name": "Module.Unity.Costume",
+    "rootNamespace": "",
+    "references": [
+        "GUID:9b0074dbe0c2df442bd1bf98414522a3",
+        "GUID:de654c8ea7205fc438aaf4f5ce656492"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

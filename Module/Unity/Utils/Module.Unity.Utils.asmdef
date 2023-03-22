@@ -1,0 +1,17 @@
+{
+    "name": "Module.Unity.Utils",
+    "rootNamespace": "",
+    "references": [
+        "GUID:de654c8ea7205fc438aaf4f5ce656492",
+        "GUID:844249fa36e02a74dad55a6bccaa4fe2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
