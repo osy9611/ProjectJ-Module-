@@ -16,20 +16,30 @@ namespace Module.Unity.Input
     {
         private PlayerInput playerInput;
 
+        public string NowControllScheme { 
+            get
+            {
+                if (playerInput != null)
+                    return playerInput.defaultControlScheme;
+
+                return null;
+            }
+        }
+
         public void Init()
         {
         }
 
-        public void RegisterInput<T>(T comPlayerActor, string schemeType) where T : UnityEngine.Component
+        public void RegisterInput<T>(T comActor, string schemeType) where T : UnityEngine.Component
         {
-            this.playerInput = comPlayerActor.GetComponent<PlayerInput>();
+            if (comActor == null)
+            {
+                return;
+            }
+
+            this.playerInput = comActor.GetComponent<PlayerInput>();
 
             playerInput.defaultControlScheme = schemeType;
-        }
-
-        public string GetNowContorolScheme()
-        {
-            return playerInput.defaultControlScheme;
         }
 
         public void AddEvent(string eventName, System.Action<InputAction.CallbackContext> callback, InputEvnetType eventType)

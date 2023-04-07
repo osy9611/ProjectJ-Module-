@@ -10,36 +10,48 @@ namespace Module.Unity.Custermization
     using UnityEngine;
 
     public class CostumeManager
-    {        
+    {
         public bool ChangeColor(ComCostumeAgent agent, int partIdx, Color color, IEventArgs args = null)
         {
+            if (agent == null)
+                return false;
+
             PartAssetData data = PartAssetData.Create(0, color, args);
             PartAssetData? result = null;
             agent.ChangeOrAttach(data, out result);
 
-            return result == null;
+            return true;
         }
 
         public bool ChangeMaterial(ComCostumeAgent agent, int partIdx, Material material, IEventArgs args = null)
         {
+            if (agent == null)
+                return false;
+
             PartAssetData data = PartAssetData.Create(0, material, args);
             PartAssetData? result = null;
             agent.ChangeOrAttach(data, out result);
 
-            return result == null;
+            return true;
         }
 
         public bool ChangeGameObject(ComCostumeAgent agent, int partIdx, GameObject gameobject, IEventArgs args = null)
         {
+            if (agent == null)
+                return false;
+
             PartAssetData data = PartAssetData.Create(0, gameobject, args);
             PartAssetData? result = null;
             agent.ChangeOrAttach(data, out result);
 
-            return result == null;
+            return true;
         }
 
         public bool ChangeMeshRenderer(ComCostumeAgent agent, int partIdx, MeshRenderer renderer, bool? sameBoneOrder = null, IEventArgs args = null)
         {
+            if (agent == null)
+                return false;
+
             PartAssetData data;
             PartAssetData? result = null;
             if (sameBoneOrder == null)
@@ -53,11 +65,14 @@ namespace Module.Unity.Custermization
 
             agent.ChangeOrAttach(data, out result);
 
-            return result == null;
+            return true;
         }
 
         public bool SkinnedMeshRenderer(ComCostumeAgent agent, int partIdx, SkinnedMeshRenderer renderer, bool? sameBoneOrder = null, IEventArgs args = null)
         {
+            if (agent == null)
+                return false;
+
             PartAssetData data;
             PartAssetData? result = null;
             if (sameBoneOrder == null)
@@ -71,7 +86,7 @@ namespace Module.Unity.Custermization
 
             agent.ChangeOrAttach(data, out result);
 
-            return result == null;
+            return true;
         }
     }
 }

@@ -56,7 +56,7 @@ namespace Module.Unity.Custermization
             }
         }
 
-        public void ChangeOrAttach(PartAssetData assetData, out PartAssetData? preAssetData)
+        internal void ChangeOrAttach(PartAssetData assetData, out PartAssetData? preAssetData)
         {
             UnityEngine.Assertions.Assert.IsTrue(assetData.PartIndex >= 0 && assetData.PartIndex < slots.Count, "part' index is incorrect");
 
@@ -66,7 +66,7 @@ namespace Module.Unity.Custermization
             preAssetData = oldAssetData;
         }
 
-        public void ChangeOrAttach(PartAssetData assetData)
+        internal void ChangeOrAttach(PartAssetData assetData)
         {
             UnityEngine.Assertions.Assert.IsTrue(assetData.PartIndex >= 0 && assetData.PartIndex < slots.Count, "part' index is incorrect");
 
