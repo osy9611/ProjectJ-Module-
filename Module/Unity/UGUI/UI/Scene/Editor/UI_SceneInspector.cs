@@ -26,6 +26,14 @@ namespace Module.Unity.UGUI
                 EditorUtility.SetDirty(script);
             }
 
+            if(GUILayout.Button("Register All Element"))
+            {
+                var allElem = script.GetComponentsInChildren<UI_Element>();
+
+                script.ElemInfos = allElem;
+                EditorUtility.SetDirty(script);
+            }
+
             base.OnInspectorGUI();
         }
     }

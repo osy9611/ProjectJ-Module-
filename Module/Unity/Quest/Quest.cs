@@ -10,8 +10,10 @@ namespace Module.Unity.Quest
         public int Id { get; }
         public int Type { get;}
         public bool Clear { get;}
+        public bool GetAutoReward { get; }
         public void GetQuestData(short id);
         public void CheckQuest(string data);
+        public bool CheckQuestData(string data);
         public void GetReward();
     }
 
@@ -32,21 +34,29 @@ namespace Module.Unity.Quest
         protected bool clear = false;
         public bool Clear => clear;
 
+        protected bool getAutoReward = false;
+        public bool GetAutoReward=>getAutoReward;
+
 
         protected Dictionary<string, IEventArgs> reachQuest = new Dictionary<string, IEventArgs>();
         public Dictionary<string,IEventArgs> ReachQuest => reachQuest;
         public virtual void CheckQuest(string data)
         {
-
         }
 
         public virtual void GetQuestData(short id)
         {
         }
 
+        public virtual bool CheckQuestData(string data)
+        {
+            return ReachQuest.ContainsKey(data);
+        }
+
         public virtual void GetReward()
         {
 
         }
+
     }
 }

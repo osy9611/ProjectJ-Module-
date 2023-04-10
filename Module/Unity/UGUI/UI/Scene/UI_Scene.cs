@@ -4,6 +4,7 @@ namespace Module.Unity.UGUI
     using Module.Unity.UGUI.Hud;
     using Module.Unity.UGUI.Notification;
     using Module.Unity.Utils;
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
@@ -15,6 +16,9 @@ namespace Module.Unity.UGUI
 
         [SerializeField] UI_Popup[] popupInfos;
         public UI_Popup[] PopupInfo { get => popupInfos; set => popupInfos = value; }
+
+        [SerializeField] UI_Element[] elemInfos;
+        public UI_Element[] ElemInfos { get => elemInfos; set => elemInfos = value; }
 
         [SerializeField] ComNotification[] notificationInfos;
         public ComNotification[] NotificationInfos => notificationInfos;
@@ -34,6 +38,11 @@ namespace Module.Unity.UGUI
             {
                 notificationInfos[i].gameObject.SetActive(false);
             }
+        }
+
+        public virtual T GetElem<T>() where T : UI_Element
+        {
+            return (T)Array.Find(ElemInfos, element => (element as T) != null);
         }
     }
 

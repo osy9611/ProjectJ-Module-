@@ -30,12 +30,20 @@ namespace Module.Unity.UGUI
             }
         }
 
-        public T Get<T>() where T : UI_Scene
+        public T GetScene<T>() where T : UI_Scene
         {
             if (sceneUI == null)
                 return default(T);
 
             return sceneUI as T;
+        }
+
+        public T GetElem<T>() where T : UI_Element
+        {
+            if (sceneUI == null)
+                return null;
+
+            return sceneUI.GetElem<T>();
         }
 
         public void SetCanvas(GameObject go, bool sort = true)
