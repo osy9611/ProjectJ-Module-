@@ -1,6 +1,5 @@
 namespace Module.Unity.UGUI 
 {
-
     using Module.Unity.Utils;
     using System;
     using System.Collections.Generic;
@@ -26,10 +25,21 @@ namespace Module.Unity.UGUI
 
             for (int i = 0, range = names.Length; i < range; ++i)
             {
-                if (typeof(T) == typeof(GameObject))
-                    objects[i] = Util.FindChild(gameObject, names[i], true);
+                if(gameObject.name == names[i])
+                {
+                    if (typeof(T) == typeof(GameObject))
+                        objects[i] = gameObject;
+                    else
+                        objects[i] = GetComponent<T>();
+                }
                 else
-                    objects[i] = Util.FindChild<T>(gameObject, names[i], true);
+                {
+                    if (typeof(T) == typeof(GameObject))
+                        objects[i] = Util.FindChild(gameObject, names[i], true);
+                    else
+                        objects[i] = Util.FindChild<T>(gameObject, names[i], true);
+                }
+              
 
                 if (objects[i] == null)
                     Debug.LogError($"Fail To Bind({names[i]})");
@@ -73,10 +83,19 @@ namespace Module.Unity.UGUI
         protected T Get<T>(int idx) where T : UnityEngine.Object
         {
             UnityEngine.Object[] objects = null;
-            if (this.objects.TryGetValue(typeof(T), out objects) == false)
+            if (!this.objects.TryGetValue(typeof(T), out objects))
                 return null;
 
             return objects[idx] as T;
+        }
+
+        protected T[] Get<T>() where T : UnityEngine.Object
+        {
+            UnityEngine.Object[] objects = null;
+            if (!this.objects.TryGetValue(typeof(T), out objects))
+                return null;
+
+            return Array.ConvertAll(objects, x=> (T)x);
         }
 
         protected GameObject GetObject(int idx) { return Get<GameObject>(idx); }
@@ -87,6 +106,11 @@ namespace Module.Unity.UGUI
         public static void BindEvent(GameObject go, Action<PointerEventData, System.Action<Vector2>> action, Define.UIEvent type = Define.UIEvent.Click)
         {
             UI_EventHandler handle = Util.GetOrAddComponent<UI_EventHandler>(go);
+            if(handle == null)
+            {
+                Debug.LogError("Null UI_EventHandler");
+                return;
+            }
 
             switch (type)
             {

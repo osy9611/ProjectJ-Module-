@@ -38,12 +38,20 @@ namespace Module.Unity.UGUI
             return sceneUI as T;
         }
 
+
         public T GetElem<T>() where T : UI_Element
         {
             if (sceneUI == null)
                 return null;
 
             return sceneUI.GetElem<T>();
+        }
+        public void ActiveElem<T>(System.Action<T> callback = null) where T : UI_Element
+        {
+            T result = GetElem<T>();
+
+            if (result != null)
+                callback?.Invoke(result);
         }
 
         public void SetCanvas(GameObject go, bool sort = true)
@@ -76,12 +84,20 @@ namespace Module.Unity.UGUI
             return sceneUI;
         }
 
+
+        public void ShowPopupUI(UI_Popup popup)
+        {
+            if (popup == null)
+                return;
+
+            ShowPopupUI<UI_Popup>(popup.GetType().Name);
+        }
         public void ShowPopupUI<T>(string name = null) where T : UI_Popup
         {
             if (string.IsNullOrEmpty(name))
                 return;
 
-            if(PopupInfos.TryGetValue(name, out var info))
+            if (PopupInfos.TryGetValue(name, out var info))
             {
                 info.gameObject.SetActive(true);
                 popupStack.Push(info);
@@ -94,12 +110,12 @@ namespace Module.Unity.UGUI
             {
                 if (popup == null)
                     continue;
-
                 popup.gameObject.SetActive(false);
 
                 popup.OnSetCanvasHandler += SetCanvas;
+                popup.OnShowPopupUIHandler += ShowPopupUI;
                 popup.OnClosePopupUIHandler += ClosePopupUI;
-                PopupInfos.Add(popupInfos.GetType().Name, popup);
+                PopupInfos.Add(popup.GetType().Name, popup);
             }
         }
 
@@ -138,7 +154,8 @@ namespace Module.Unity.UGUI
         {
             if (popupStack.Count == 0)
                 return;
-            popupStack.Pop();
+            UI_Popup popup = popupStack.Pop();
+            popup.gameObject.SetActive(false);
             orderLayer--;
         }
 

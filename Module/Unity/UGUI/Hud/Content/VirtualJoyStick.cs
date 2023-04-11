@@ -1,10 +1,7 @@
 namespace Module.Unity.UGUI
 {
-    using global::Unity.VisualScripting.Antlr3.Runtime;
     using UnityEngine;
     using UnityEngine.EventSystems;
-    using UnityEngine.InputSystem.Layouts;
-    using UnityEngine.InputSystem.OnScreen;
     public class VirtualJoyStick : UI_Base
     {
         [SerializeField] private RectTransform lever;
@@ -13,7 +10,6 @@ namespace Module.Unity.UGUI
 
         [SerializeField, Range(5f, 50f)]
         private float leverRange;
-
 
         private Vector2 pointerDownPos;
         [SerializeField] private Vector2 dir;
@@ -29,7 +25,8 @@ namespace Module.Unity.UGUI
             if (eventData == null)
                 throw new System.ArgumentException(nameof(eventData));
 
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(transform.GetComponent<RectTransform>(), eventData.position, eventData.pressEventCamera, out Vector2 position);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(transform.GetComponent<RectTransform>(), eventData.position, 
+                eventData.pressEventCamera, out Vector2 position);
             Vector2 delta = position - pointerDownPos;
             delta = Vector2.ClampMagnitude(delta, leverRange);
             lever.anchoredPosition = pointerDownPos + delta;

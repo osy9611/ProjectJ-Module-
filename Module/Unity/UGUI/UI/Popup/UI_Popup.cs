@@ -8,18 +8,22 @@ namespace Module.Unity.UGUI
     public class UI_Popup : UI_Base
     {
         public System.Action<GameObject, bool> OnSetCanvasHandler;
+        public System.Action<UI_Popup> OnShowPopupUIHandler;
         public System.Action<UI_Popup> OnClosePopupUIHandler;
 
         public override void Init()
         {
-            if(OnSetCanvasHandler != null)
-                OnSetCanvasHandler.Invoke(gameObject,true);
+            OnSetCanvasHandler?.Invoke(gameObject, true);               
+        }
+
+        public virtual void ShowPopupUI()
+        {
+            OnShowPopupUIHandler?.Invoke(this);
         }
 
         public virtual void ClosePopupUI()
         {
-            if (OnClosePopupUIHandler != null)
-                OnClosePopupUIHandler.Invoke(this);
+            OnClosePopupUIHandler?.Invoke(this);
         }
 
     }

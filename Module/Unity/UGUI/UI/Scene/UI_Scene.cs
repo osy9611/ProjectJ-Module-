@@ -1,12 +1,7 @@
 namespace Module.Unity.UGUI
 {
-    using Module.Core.Systems.Events;
-    using Module.Unity.UGUI.Hud;
     using Module.Unity.UGUI.Notification;
-    using Module.Unity.Utils;
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using UnityEngine;
     [System.Serializable]
     public class UI_Scene : UI_Base
@@ -38,6 +33,11 @@ namespace Module.Unity.UGUI
             {
                 notificationInfos[i].gameObject.SetActive(false);
             }
+        }
+
+        public virtual T GetPopup<T>() where T : UI_Popup
+        {
+            return (T)Array.Find(popupInfos, element => (element as T) != null);
         }
 
         public virtual T GetElem<T>() where T : UI_Element
