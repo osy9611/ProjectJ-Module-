@@ -11,7 +11,7 @@ namespace Module.Unity.Custermization
 
     public class CostumeManager
     {
-        public bool ChangeColor(ComCostumeAgent agent, int partIdx, Color color, IEventArgs args = null)
+        public bool ChangeColor(ComCostumeAgent agent, int partIdx, Color color, IArgs args = null)
         {
             if (agent == null)
                 return false;
@@ -23,7 +23,7 @@ namespace Module.Unity.Custermization
             return true;
         }
 
-        public bool ChangeMaterial(ComCostumeAgent agent, int partIdx, Material material, IEventArgs args = null)
+        public bool ChangeMaterial(ComCostumeAgent agent, int partIdx, Material material, IArgs args = null)
         {
             if (agent == null)
                 return false;
@@ -35,7 +35,7 @@ namespace Module.Unity.Custermization
             return true;
         }
 
-        public bool ChangeGameObject(ComCostumeAgent agent, int partIdx, GameObject gameobject, IEventArgs args = null)
+        public bool ChangeGameObject(ComCostumeAgent agent, int partIdx, GameObject gameobject, IArgs args = null)
         {
             if (agent == null)
                 return false;
@@ -47,7 +47,7 @@ namespace Module.Unity.Custermization
             return true;
         }
 
-        public bool ChangeMeshRenderer(ComCostumeAgent agent, int partIdx, MeshRenderer renderer, bool? sameBoneOrder = null, IEventArgs args = null)
+        public bool ChangeMeshRenderer(ComCostumeAgent agent, int partIdx, MeshRenderer renderer, bool? sameBoneOrder = null, IArgs args = null)
         {
             if (agent == null)
                 return false;
@@ -68,7 +68,7 @@ namespace Module.Unity.Custermization
             return true;
         }
 
-        public bool SkinnedMeshRenderer(ComCostumeAgent agent, int partIdx, SkinnedMeshRenderer renderer, bool? sameBoneOrder = null, IEventArgs args = null)
+        public bool SkinnedMeshRenderer(ComCostumeAgent agent, int partIdx, SkinnedMeshRenderer renderer, bool? sameBoneOrder = null, IArgs args = null)
         {
             if (agent == null)
                 return false;

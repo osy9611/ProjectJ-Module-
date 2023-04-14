@@ -1,7 +1,9 @@
 
 namespace Module.Unity.Quest
 {
+    using Module.Core.Systems.Collections.Generic;
     using Module.Core.Systems.Events;
+    using System;
     using System.Collections.Generic;
 
     public interface IQuest
@@ -19,13 +21,10 @@ namespace Module.Unity.Quest
 
     public class Quest<T> : IQuest
     {
-        protected T questInfo;
-
         protected string name;
         public string Name => name;
 
         protected int id;
-
         public int Id => id;
 
         protected int type;
@@ -37,9 +36,10 @@ namespace Module.Unity.Quest
         protected bool getAutoReward = false;
         public bool GetAutoReward=>getAutoReward;
 
-
-        protected Dictionary<string, IEventArgs> reachQuest = new Dictionary<string, IEventArgs>();
-        public Dictionary<string,IEventArgs> ReachQuest => reachQuest;
+        protected T questInfo;
+        protected Dictionary<Type, IReward> rewardInfos = new Dictionary<Type, IReward>();
+        protected Dictionary<string, IArgs> reachQuest = new Dictionary<string, IArgs>();
+        public Dictionary<string,IArgs> ReachQuest => reachQuest;
         public virtual void CheckQuest(string data)
         {
         }

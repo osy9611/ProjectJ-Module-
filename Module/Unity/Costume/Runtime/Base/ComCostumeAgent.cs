@@ -131,7 +131,7 @@ namespace Module.Unity.Custermization
                     }
                     else
                     {
-                        EventArgs<int>? val = assetData.Args as EventArgs<int>?;
+                        Args<int>? val = assetData.Args as Args<int>?;
                         if (!val.HasValue)
                             return;
                         if (slotInfo.Renderer.materials.Length - 1 < val.Value.Arg1 || val.Value.Arg1 < 0)
@@ -146,7 +146,7 @@ namespace Module.Unity.Custermization
                     }
                     else
                     {
-                        EventArgs<int>? val = assetData.Args as EventArgs<int>?;
+                        Args<int>? val = assetData.Args as Args<int>?;
                         if (!val.HasValue)
                             return;
                         if (slotInfo.Renderer.materials.Length - 1 < val.Value.Arg1 || val.Value.Arg1 < 0)

@@ -10,7 +10,15 @@ namespace Module.Unity.UGUI
     public abstract class UI_Base : MonoBehaviour
     {
         protected Dictionary<Type, UnityEngine.Object[]> objects = new Dictionary<Type, UnityEngine.Object[]>();
+        
+        public virtual void PostInit() { }
         public abstract void Init();
+       
+
+        private void Awake()
+        {
+            PostInit();
+        }
 
         void Start()
         {
@@ -35,9 +43,9 @@ namespace Module.Unity.UGUI
                 else
                 {
                     if (typeof(T) == typeof(GameObject))
-                        objects[i] = Util.FindChild(gameObject, names[i], true);
+                        objects[i] = ComponentUtil.FindChild(gameObject, names[i], true);
                     else
-                        objects[i] = Util.FindChild<T>(gameObject, names[i], true);
+                        objects[i] = ComponentUtil.FindChild<T>(gameObject, names[i], true);
                 }
               
 
@@ -54,9 +62,9 @@ namespace Module.Unity.UGUI
             for (int i = 0, range = names.Length; i < range; ++i)
             {
                 if (typeof(T) == typeof(GameObject))
-                    objects[i] = Util.FindChild(gameObject, names[i], true);
+                    objects[i] = ComponentUtil.FindChild(gameObject, names[i], true);
                 else
-                    objects[i] = Util.FindChild<T>(gameObject, names[i], true);
+                    objects[i] = ComponentUtil.FindChild<T>(gameObject, names[i], true);
 
                 if (objects[i] == null)
                     Debug.LogError($"Fail To Bind({names[i]})");
@@ -71,9 +79,9 @@ namespace Module.Unity.UGUI
             for (int i = 0, range = objs.Length; i < range; ++i)
             {
                 if (typeof(T) == typeof(GameObject))
-                    objects[i] = Util.FindChild(gameObject, objs[i].name, true);
+                    objects[i] = ComponentUtil.FindChild(gameObject, objs[i].name, true);
                 else
-                    objects[i] = Util.FindChild<T>(gameObject, objs[i].name, true);
+                    objects[i] = ComponentUtil.FindChild<T>(gameObject, objs[i].name, true);
 
                 if (objects[i] == null)
                     Debug.LogError($"Fail To Bind({objs[i].name})");
@@ -105,7 +113,7 @@ namespace Module.Unity.UGUI
 
         public static void BindEvent(GameObject go, Action<PointerEventData, System.Action<Vector2>> action, Define.UIEvent type = Define.UIEvent.Click)
         {
-            UI_EventHandler handle = Util.GetOrAddComponent<UI_EventHandler>(go);
+            UI_EventHandler handle = ComponentUtil.GetOrAddComponent<UI_EventHandler>(go);
             if(handle == null)
             {
                 Debug.LogError("Null UI_EventHandler");

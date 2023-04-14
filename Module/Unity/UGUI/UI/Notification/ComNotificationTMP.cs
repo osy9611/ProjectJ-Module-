@@ -13,9 +13,9 @@ namespace Module.Unity.UGUI.Notification
             base.Awake();
         }
 
-        public override void OnSetData(IEventArgs args)
+        public override void OnSetData(IArgs args)
         {
-            EventArgs<string>? val = args as EventArgs<string>?;
+            Args<string>? val = args as Args<string>?;
 
             if (text == null||!val.HasValue)
                 return;

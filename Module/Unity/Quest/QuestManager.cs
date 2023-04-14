@@ -60,12 +60,12 @@ namespace Module.Unity.Quest
             {
                 for (int i = value.Count - 1; i >= 0; --i)
                 {
-                    if (!value[i].CheckQuestData(data))
+                    if (!value[i].CheckQuestData(data) || value[i].Clear)
                         continue;
 
                     value[i].CheckQuest(data);
 
-                    if (value[i].Clear &&value[i].GetAutoReward)
+                    if (value[i].Clear && value[i].GetAutoReward)
                         value[i].GetReward();
                 }
                 eventEmmiter.Invoke();
@@ -74,7 +74,7 @@ namespace Module.Unity.Quest
 
         public void GetReward(int type, int id)
         {
-            if(questList.TryGetValue(type, out var value))
+            if (questList.TryGetValue(type, out var value))
             {
                 value.Find(x => x.Id == id).GetReward();
             }
@@ -84,6 +84,7 @@ namespace Module.Unity.Quest
         {
             if (questList.TryGetValue(type, out var value))
             {
+
                 value.Remove(quest);
             }
             else

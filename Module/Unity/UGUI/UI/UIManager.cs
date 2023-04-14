@@ -13,7 +13,7 @@ namespace Module.Unity.UGUI
         private int orderLayer = 10;
 
         private Stack<UI_Popup> popupStack = new Stack<UI_Popup>();
-        private Dictionary<string, UI_Popup> PopupInfos = new Dictionary<string, UI_Popup>();
+        private Dictionary<string, UI_Popup> popupInfos = new Dictionary<string, UI_Popup>();
         private UI_Scene sceneUI;
 
         private ResourceManager resourceManager;
@@ -38,6 +38,23 @@ namespace Module.Unity.UGUI
             return sceneUI as T;
         }
 
+        public T GetPopup<T>() where T : UI_Popup
+        {
+            if (sceneUI == null)
+                return default(T);
+
+            return sceneUI.GetPopup<T>();
+        }
+
+        public void ActivePopup<T>(System.Action<T> callback  =null) where T : UI_Popup
+        {
+            T result = GetPopup<T>();
+
+            if (result != null)
+                callback.Invoke(result);
+            else
+                Debug.LogError("Null Popup");
+        }
 
         public T GetElem<T>() where T : UI_Element
         {
@@ -46,17 +63,20 @@ namespace Module.Unity.UGUI
 
             return sceneUI.GetElem<T>();
         }
+
         public void ActiveElem<T>(System.Action<T> callback = null) where T : UI_Element
         {
             T result = GetElem<T>();
 
             if (result != null)
                 callback?.Invoke(result);
+            else
+                Debug.LogError("Null Element");
         }
 
         public void SetCanvas(GameObject go, bool sort = true)
         {
-            Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
+            Canvas canvas = ComponentUtil.GetOrAddComponent<Canvas>(go);
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.overrideSorting = true;
 
@@ -77,7 +97,7 @@ namespace Module.Unity.UGUI
                 return default(T);
 
             GameObject go = resourceManager.LoadAndPool(path, root.transform, 1);
-            T sceneUI = Util.GetOrAddComponent<T>(go);
+            T sceneUI = ComponentUtil.GetOrAddComponent<T>(go);
             sceneUI.OnSetCanvasHandler += SetCanvas;
             sceneUI.OnAddPopupHandler += AddPopupUI;
             this.sceneUI = sceneUI;
@@ -97,7 +117,7 @@ namespace Module.Unity.UGUI
             if (string.IsNullOrEmpty(name))
                 return;
 
-            if (PopupInfos.TryGetValue(name, out var info))
+            if (popupInfos.TryGetValue(name, out var info))
             {
                 info.gameObject.SetActive(true);
                 popupStack.Push(info);
@@ -115,11 +135,11 @@ namespace Module.Unity.UGUI
                 popup.OnSetCanvasHandler += SetCanvas;
                 popup.OnShowPopupUIHandler += ShowPopupUI;
                 popup.OnClosePopupUIHandler += ClosePopupUI;
-                PopupInfos.Add(popup.GetType().Name, popup);
+                this.popupInfos.Add(popup.GetType().Name, popup);
             }
         }
 
-        public void ShowNotification(int index, IEventArgs args)
+        public void ShowNotification(int index, IArgs args)
         {
             if (sceneUI == null)
                 return;

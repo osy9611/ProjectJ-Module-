@@ -34,10 +34,10 @@ namespace Module.Unity.UGUI.Hud
 
             GameObject go = new GameObject();
             go.name = "Hud";
-            ui_scene.HudRoot = Util.GetOrAddComponent<RectTransform>(go);
+            ui_scene.HudRoot = ComponentUtil.GetOrAddComponent<RectTransform>(go);
             ui_scene.HudRoot.transform.SetParent(ui_scene.gameObject.transform);
 
-            canvas = Util.GetOrAddComponent<RectTransform>(ui_scene.gameObject);
+            canvas = ComponentUtil.GetOrAddComponent<RectTransform>(ui_scene.gameObject);
             rootHud = ui_scene.HudRoot;
         }
 
@@ -48,7 +48,7 @@ namespace Module.Unity.UGUI.Hud
 
             GameObject go = resourceManager.LoadAndPool(path,null);
             go.transform.SetParent(rootHud, false);
-            T hud = Util.GetOrAddComponent<T>(go);
+            T hud = ComponentUtil.GetOrAddComponent<T>(go);
             hud.Init(pivotInfo);
             return hud;
         }
@@ -60,7 +60,7 @@ namespace Module.Unity.UGUI.Hud
 
             GameObject go = resourceManager.LoadAndPool(path,null);
             go.transform.SetParent(rootHud, false);
-            T hud = Util.GetOrAddComponent<T>(go);
+            T hud = ComponentUtil.GetOrAddComponent<T>(go);
             hud.Init(pivotInfo);
             return hud ;
         }
