@@ -199,7 +199,12 @@ namespace Module.Unity.Addressables
 
         public T LoadAndGet<T>(AssetReference assetRef)
         {
-            string addressable = GetAddressable(assetRef);
+            string addressable = null;
+            GetAddressable(assetRef,(result)=>
+            {
+                addressable =result;
+            });
+
             if (string.IsNullOrEmpty(addressable))
                 return default(T);
 
@@ -217,24 +222,31 @@ namespace Module.Unity.Addressables
             return handle.Result;
         }
 
-        public string GetAddressable(AssetReference assetRef)
+        public void  CoGetAddressable(AssetReference assetRef,Action<string>callback)
         {
-            if (assetRef == null)
-                return null;
+            ComLoader.Root.StartCoroutine(GetAddressable(assetRef, callback));
+        }
 
+        public IEnumerator GetAddressable(AssetReference assetRef,Action<string> callback=null)
+        {
+            string result = null;
             var handle = Addressables.LoadResourceLocationsAsync(assetRef);
-            handle.WaitForCompletion();
+            yield return handle;
 
-            if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result != null
-                && handle.Result.Count > 0)
+            using (AsyncOperationDisposer disposer = new AsyncOperationDisposer(handle))
             {
-                return handle.Result[0].InternalId;
+                if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result != null
+                   && handle.Result.Count > 0)
+                {
+                    result =handle.Result[0].InternalId;
+                }
+                else
+                {
+                    Debug.Log("Fail To Load LoadResourceLocationsAsync");
+                }
             }
-            else
-            {
-                Debug.Log("Fail To Load LoadResourceLocationsAsync");
-            }
-            return null;
+
+            callback?.Invoke(result);
         }
 
 
@@ -245,7 +257,12 @@ namespace Module.Unity.Addressables
 
         public IEnumerator CoLoadAsset<T>(AssetReference assetRef, System.Action<T> callback, bool autoReleaseOnFail = true)
         {
-            string addressable = GetAddressable(assetRef);
+            string addressable = null;
+            yield return GetAddressable(assetRef,(result)=>
+            {
+                addressable = result;
+            });
+
             if (string.IsNullOrEmpty(addressable))
                 callback?.Invoke(default(T));
 
@@ -324,21 +341,28 @@ namespace Module.Unity.Addressables
 
         public void Release(string addressable)
         {
-            if(datas.TryGetValue(addressable, out var handle))
+            if (datas.TryGetValue(addressable, out var handle))
             {
                 Addressables.Release(handle);
                 datas.Remove(addressable);
             }
-           
+
         }
-        
+
         public void Release(AssetReference assetRef)
         {
             if (assetRef.Asset == null)
                 return;
+            string addressable = null;
+            CoGetAddressable(assetRef,(result)=>
+            {
+                addressable = result;
+            });
 
-            string addressable = GetAddressable(assetRef);
-            if(datas.TryGetValue(addressable, out var handle))
+            if (string.IsNullOrEmpty(addressable))
+                return;
+
+            if (datas.TryGetValue(addressable, out var handle))
             {
                 Addressables.Release(handle);
                 datas.Remove(addressable);

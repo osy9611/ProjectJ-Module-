@@ -149,7 +149,7 @@ namespace Module.Unity.DayNight
             }
         }
 
-        public virtual UnityEvent GetEvent(DesignEnum.TimeType timeType,System.Action action)
+        public virtual UnityEvent AddEvent(DesignEnum.TimeType timeType,System.Action action)
         {
             switch (timeType)
             {
