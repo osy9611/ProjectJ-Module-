@@ -24,6 +24,7 @@ namespace Module.Unity.UGUI.Notification
             this.gameObject.SetActive(false);
         }
 
+
         abstract public void OnSetData(IArgs args);
     }
 

@@ -7,7 +7,8 @@ namespace Module.Unity.Pivot
     public enum PivotType
     {
         Effect,
-        UI
+        UI,
+        Projectile
     }
 
     [System.Serializable]

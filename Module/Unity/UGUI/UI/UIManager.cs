@@ -91,12 +91,21 @@ namespace Module.Unity.UGUI
             }
         }
 
-        public T ShowSceneUI<T>(string path = null) where T : UI_Scene
+        public T ShowSceneUI<T>(string path = null, bool isCreate = true) where T : UI_Scene
         {
             if (string.IsNullOrEmpty(path))
                 return default(T);
 
-            GameObject go = resourceManager.LoadAndPool(path, root.transform, 1);
+            GameObject go = null;
+
+            if(isCreate)
+                go = resourceManager.LoadAndPop(path, root.transform, 1);
+            else
+                go = resourceManager.LoadAndPop(path, root.transform);
+
+            if(go == null)
+                return default(T);
+
             T sceneUI = ComponentUtil.GetOrAddComponent<T>(go);
             sceneUI.OnSetCanvasHandler += SetCanvas;
             sceneUI.OnAddPopupHandler += AddPopupUI;

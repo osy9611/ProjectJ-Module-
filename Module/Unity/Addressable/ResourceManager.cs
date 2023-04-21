@@ -39,7 +39,19 @@ namespace Module.Unity.Addressables
             return go;
         }
 
-        public GameObject LoadAndPool(string path, Transform parent = null)
+        public T LoadAndPop<T>(string path, Transform parent = null) where T : UnityEngine.Component
+        {
+            GameObject original = LoadAndGet<GameObject>(path);
+            if (original == null)
+            {
+                Debug.Log($"Fail to load prefab : {path} ");
+                return null;
+            }
+            original.GetOrAddComponent<T>();
+            return poolManager.Pop(original, parent).gameObject.GetOrAddComponent<T>();
+        }
+
+        public GameObject LoadAndPop(string path, Transform parent = null)
         {
             GameObject original = LoadAndGet<GameObject>(path);
             if (original == null)
@@ -51,7 +63,7 @@ namespace Module.Unity.Addressables
             return poolManager.Pop(original, parent).gameObject;
         }
 
-        public GameObject LoadAndPool(string path, Transform parent = null, int poolCount = 1)
+        public GameObject LoadAndPop(string path, Transform parent = null, int poolCount = 1)
         {
             GameObject original = LoadAndGet<GameObject>(path);
             if (original == null)
@@ -63,7 +75,7 @@ namespace Module.Unity.Addressables
             return poolManager.Pop(original, parent).gameObject;
         }
 
-        public void LoadAndCreate(string path, Transform parent = null, int poolCount = 1)
+        public void LoadAndPool(string path, Transform parent = null, int poolCount = 1)
         {
             GameObject original = LoadAndGet<GameObject>(path);
             if (original == null)
@@ -76,7 +88,7 @@ namespace Module.Unity.Addressables
             poolManager.CreatePool(original, poolCount);
         }
 
-        public void LoadAndCreate<T>(string path, Transform parent = null, int poolCount = 1) where T : UnityEngine.Component
+        public void LoadAndPool<T>(string path, Transform parent = null, int poolCount = 1) where T : UnityEngine.Component
         {
             GameObject original = LoadAndGet<GameObject>(path);
             if (original == null)
@@ -200,9 +212,9 @@ namespace Module.Unity.Addressables
         public T LoadAndGet<T>(AssetReference assetRef)
         {
             string addressable = null;
-            GetAddressable(assetRef,(result)=>
+            GetAddressable(assetRef, (result) =>
             {
-                addressable =result;
+                addressable = result;
             });
 
             if (string.IsNullOrEmpty(addressable))
@@ -222,12 +234,12 @@ namespace Module.Unity.Addressables
             return handle.Result;
         }
 
-        public void  CoGetAddressable(AssetReference assetRef,Action<string>callback)
+        public void CoGetAddressable(AssetReference assetRef, Action<string> callback)
         {
             ComLoader.Root.StartCoroutine(GetAddressable(assetRef, callback));
         }
 
-        public IEnumerator GetAddressable(AssetReference assetRef,Action<string> callback=null)
+        public IEnumerator GetAddressable(AssetReference assetRef, Action<string> callback = null)
         {
             string result = null;
             var handle = Addressables.LoadResourceLocationsAsync(assetRef);
@@ -238,7 +250,7 @@ namespace Module.Unity.Addressables
                 if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result != null
                    && handle.Result.Count > 0)
                 {
-                    result =handle.Result[0].InternalId;
+                    result = handle.Result[0].InternalId;
                 }
                 else
                 {
@@ -258,7 +270,7 @@ namespace Module.Unity.Addressables
         public IEnumerator CoLoadAsset<T>(AssetReference assetRef, System.Action<T> callback, bool autoReleaseOnFail = true)
         {
             string addressable = null;
-            yield return GetAddressable(assetRef,(result)=>
+            yield return GetAddressable(assetRef, (result) =>
             {
                 addressable = result;
             });
@@ -354,7 +366,7 @@ namespace Module.Unity.Addressables
             if (assetRef.Asset == null)
                 return;
             string addressable = null;
-            CoGetAddressable(assetRef,(result)=>
+            CoGetAddressable(assetRef, (result) =>
             {
                 addressable = result;
             });

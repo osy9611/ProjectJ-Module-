@@ -16,9 +16,6 @@ namespace Module.Unity.UGUI.Hud
 
         Transform rootHud;
 
-        public Dictionary<Type,ComHudAgent> comHudAgents = new Dictionary<Type, ComHudAgent>();
-
-
         public void Init(ResourceManager resourceManager)
         {
             this.resourceManager = resourceManager;
@@ -43,10 +40,10 @@ namespace Module.Unity.UGUI.Hud
 
         public T Get<T>(string path, PivotInfo pivotInfo) where T : ComHudAgent
         {
-            if(string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path))
                 return default(T);
 
-            GameObject go = resourceManager.LoadAndPool(path,null);
+            GameObject go = resourceManager.LoadAndPop(path, null);
             go.transform.SetParent(rootHud, false);
             T hud = ComponentUtil.GetOrAddComponent<T>(go);
             hud.Init(pivotInfo);
@@ -58,13 +55,28 @@ namespace Module.Unity.UGUI.Hud
             if (string.IsNullOrEmpty(path))
                 return default(T);
 
-            GameObject go = resourceManager.LoadAndPool(path,null);
+            GameObject go = resourceManager.LoadAndPop(path, null);
             go.transform.SetParent(rootHud, false);
             T hud = ComponentUtil.GetOrAddComponent<T>(go);
             hud.Init(pivotInfo);
-            return hud ;
+            return hud;
         }
 
+        public void Release<T>(T hudAgent) where T : ComHudAgent
+        {
+            if (hudAgent == null)
+                return;
+
+            resourceManager.Destory(hudAgent.gameObject);
+        }
+
+        public void Release<T>(T[] hudAgents) where T : ComHudAgent
+        {
+            for(int i=0,range=hudAgents.Length;i<range;++i)
+            {
+                resourceManager.Destory(hudAgents[i].gameObject);
+            }
+        }
     }
 }
 
