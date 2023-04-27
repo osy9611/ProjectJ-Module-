@@ -17,6 +17,11 @@ namespace Module.Core.Systems.Events
             this.listenerCapapcity = listenrCapacity;
         }
 
+        public bool CheckListener(ListenerDelegate listener)
+        {
+            return values.Contains(listener);
+        }
+
         public void AddListener(ListenerDelegate listener) 
         {
             values.Add(listener);

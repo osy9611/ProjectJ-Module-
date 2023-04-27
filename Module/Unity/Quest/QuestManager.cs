@@ -29,7 +29,6 @@ namespace Module.Unity.Quest
             else
             {
                 value.Add(quest);
-                questList.Add(quest.Type, value);
             }
         }
 
